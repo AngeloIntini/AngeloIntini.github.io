@@ -1,10 +1,35 @@
 import { FaEnvelope, FaPhone, FaInstagram, FaGithub } from "react-icons/fa";
 import emailjs from "emailjs-com";
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 function Contacts() {
   const backgroundImage =
     "radial-gradient(125% 125% at 50% 0%, #212529 50%, #6c757d)";
+
+  const [email, setEmail] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  const emailDomains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "icloud.com", "libero.it"];
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+
+    if (value.includes("@")) {
+      const [_, partialDomain] = value.split("@");
+      setSuggestions(
+        emailDomains.filter((domain) => domain.startsWith(partialDomain))
+      );
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleSuggestionClick = (domain) => {
+    const [localPart] = email.split("@");
+    setEmail(`${localPart}@${domain}`);
+    setSuggestions([]);
+  };
 
   // Variants per animazioni scroll
   const containerVariants = {
@@ -126,6 +151,7 @@ function Contacts() {
                 name="user_name"
                 placeholder="John Smith"
                 className="w-full px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6c757d]"
+                required
               />
             </div>
             <div>
@@ -137,7 +163,23 @@ function Contacts() {
                 name="user_email"
                 placeholder="email@gmail.com"
                 className="w-full px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6c757d]"
+                value={email}
+                onChange={handleEmailChange}
+                required
               />
+              {suggestions.length > 0 && (
+                <ul className="bg-white border rounded-lg mt-2">
+                  {suggestions.map((domain, index) => (
+                    <li
+                      key={index}
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                      onClick={() => handleSuggestionClick(domain)} // Gestisci il clic sui suggerimenti
+                    >
+                      {email.split("@")[0]}@{domain}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-600 mb-2">
@@ -148,6 +190,7 @@ function Contacts() {
                 placeholder="Write your message here..."
                 rows="4"
                 className="w-full px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#6c757d]"
+                required
               ></textarea>
             </div>
             <button

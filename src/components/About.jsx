@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import GlassButton from "./GlassButton";
 import profilo from '../assets/profilo.png';
+import { Link } from 'lucide-react';
 
 function About() {
   const backgroundImage = "radial-gradient(125% 125% at 50% 0%, #212529 50%, #6c757d)";
@@ -83,10 +84,12 @@ function About() {
 
           {/* CTA */}
             <GlassButton>
+              <a href="/contacts" className='flex justify-center items-center gap-2 w-full'>
               <span className='flex justify-center items-center gap-2 w-full'>
                 Contact Me
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="20px" fill="#e3e3e3"><path d="m256-240-56-56 384-384H240v-80h480v480h-80v-344L256-240Z"/></svg>
               </span>
+              </a>
             </GlassButton>
         </motion.div>
       </motion.div>
